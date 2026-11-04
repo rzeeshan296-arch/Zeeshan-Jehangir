@@ -6,10 +6,10 @@ import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Bot, Menu, Send, S
 type State = 'IDLE' | 'LOOK_LEFT' | 'LOOK_RIGHT' | 'GREETING' | 'WAVING';
 type Clip = { src: string; start: number; end: number };
 const clips: Record<Exclude<State, 'IDLE'>, Clip> = {
-  LOOK_LEFT: { src: '/videos/zeeshan-upper-body-clean.mp4', start: 1.25, end: 2.55 },
-  LOOK_RIGHT: { src: '/videos/zeeshan-full-body-clean.mp4', start: 1.25, end: 2.55 },
-  GREETING: { src: '/videos/zeeshan-full-body-clean.mp4', start: 3.0, end: 4.55 },
-  WAVING: { src: '/videos/zeeshan-upper-body-clean.mp4', start: 4.55, end: 6.45 },
+  LOOK_LEFT: { src: '/videos/zeeshan-upper-body-clean.mp4', start: 1.5, end: 2.6 },
+  LOOK_RIGHT: { src: '/videos/zeeshan-full-body-clean.mp4', start: 2.25, end: 3.1 },
+  GREETING: { src: '/videos/zeeshan-upper-body-clean.mp4', start: 3.0, end: 4.35 },
+  WAVING: { src: '/videos/zeeshan-upper-body-clean.mp4', start: 4.45, end: 5.9 },
 };
 const answers: Record<string, string> = {
   seo: 'I help businesses improve organic visibility through technical SEO, on-page optimization, keyword strategy and content improvements.',

@@ -5,16 +5,15 @@ import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Bot, Menu, Send, S
 
 type State = 'IDLE' | 'LOOK_LEFT' | 'LOOK_RIGHT' | 'GREETING' | 'WAVING' | 'RETURN_TO_IDLE';
 type Zone = 'left' | 'center' | 'right';
-type Source = 'upper' | 'full';
 type Gesture = Exclude<State, 'IDLE' | 'RETURN_TO_IDLE'>;
-type Clip = { source: Source; start: number; end: number; label: string };
+type Clip = { start: number; end: number; label: string };
+
+// One approved full-body video powers every character interaction.
 const clips: Record<Gesture, Clip> = {
-  // Full-body source turns toward the viewer's left.
-  LOOK_LEFT: { source: 'full', start: 0.45, end: 2.05, label: 'Looking left' },
-  // Upper-body source turns toward the viewer's right.
-  LOOK_RIGHT: { source: 'upper', start: 1.45, end: 2.55, label: 'Looking right' },
-  GREETING: { source: 'upper', start: 3.0, end: 4.35, label: 'Hey, welcome!' },
-  WAVING: { source: 'upper', start: 4.5, end: 6.25, label: 'Great to see you here.' },
+  LOOK_LEFT: { start: 0.45, end: 2.05, label: 'Looking left' },
+  LOOK_RIGHT: { start: 2.25, end: 3.1, label: 'Looking right' },
+  GREETING: { start: 3.0, end: 4.35, label: 'Hey, welcome!' },
+  WAVING: { start: 4.5, end: 6.25, label: 'Great to see you here.' },
 };
 const answers: Record<string, string> = {
   seo: 'I help businesses improve organic visibility through technical SEO, on-page optimization, keyword strategy and content improvements.',
@@ -24,8 +23,7 @@ const answers: Record<string, string> = {
 };
 
 function CharacterInteraction({ mobile }: { mobile: boolean }) {
-  const upperVideo = useRef<HTMLVideoElement | null>(null);
-  const fullVideo = useRef<HTMLVideoElement | null>(null);
+  const video = useRef<HTMLVideoElement | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const runId = useRef(0);
   const activeZone = useRef<Zone | null>(null);
@@ -35,7 +33,7 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
   const stateRef = useRef<State>('IDLE');
   stateRef.current = state;
   const [hint, setHint] = useState('Move across the character to interact');
-  const [visibleSource, setVisibleSource] = useState<'idle' | Source>('idle');
+  const [videoReady, setVideoReady] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
 
   const clearTimer = useCallback(() => {
@@ -43,54 +41,48 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
     timer.current = null;
   }, []);
 
-  const videoFor = useCallback((source: Source) => source === 'upper' ? upperVideo.current : fullVideo.current, []);
-
   const returnToIdle = useCallback((message = 'Move across the character to interact') => {
     const id = ++runId.current;
     clearTimer();
-    upperVideo.current?.pause();
-    const idleVideo = fullVideo.current;
+    const player = video.current;
     setState('RETURN_TO_IDLE');
     setHint(message);
-    if (!idleVideo) {
-      setVisibleSource('idle');
+    if (!player) {
       setState('IDLE');
       return;
     }
     const revealIdle = () => {
       if (id !== runId.current) return;
-      idleVideo.pause();
+      player.pause();
       const reveal = () => {
         if (id !== runId.current) return;
-        setVisibleSource('idle');
+        setState('IDLE');
         timer.current = setTimeout(() => {
-          if (id === runId.current) setState('IDLE');
+          if (id === runId.current) timer.current = null;
         }, 180);
       };
-      const onSeeked = () => {
-        idleVideo.removeEventListener('seeked', onSeeked);
-        reveal();
-      };
-      if (Math.abs(idleVideo.currentTime - 0.08) > 0.06) {
-        idleVideo.addEventListener('seeked', onSeeked, { once: true });
-        idleVideo.currentTime = 0.08;
-        if (!idleVideo.seeking) {
-          idleVideo.removeEventListener('seeked', onSeeked);
+      if (Math.abs(player.currentTime - 0.08) > 0.06) {
+        const onSeeked = () => {
+          player.removeEventListener('seeked', onSeeked);
+          reveal();
+        };
+        player.addEventListener('seeked', onSeeked, { once: true });
+        player.currentTime = 0.08;
+        if (!player.seeking) {
+          player.removeEventListener('seeked', onSeeked);
           reveal();
         }
       } else reveal();
     };
-    if (idleVideo.readyState >= 1) revealIdle();
-    else idleVideo.addEventListener('loadedmetadata', revealIdle, { once: true });
+    if (player.readyState >= 1) revealIdle();
+    else player.addEventListener('loadedmetadata', revealIdle, { once: true });
   }, [clearTimer]);
 
   const playGesture = useCallback((gesture: Gesture, done?: () => void) => {
     const id = ++runId.current;
     clearTimer();
+    const player = video.current;
     const clip = clips[gesture];
-    const target = videoFor(clip.source);
-    const other = clip.source === 'upper' ? fullVideo.current : upperVideo.current;
-    other?.pause();
     setState(gesture);
     setHint(clip.label);
     if (reducedMotion.current) {
@@ -99,7 +91,7 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
       else returnToIdle();
       return;
     }
-    if (!target || target.error) {
+    if (!player || player.error) {
       setVideoFailed(true);
       returnToIdle('Character animation is temporarily unavailable.');
       return;
@@ -107,39 +99,37 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
 
     const startPlayback = () => {
       if (id !== runId.current) return;
-      target.pause();
+      player.pause();
       const onSeeked = () => {
-        target.removeEventListener('seeked', onSeeked);
+        player.removeEventListener('seeked', onSeeked);
         if (id !== runId.current) return;
         const finish = () => {
           if (id !== runId.current) return;
-          target.removeEventListener('timeupdate', onTimeUpdate);
+          player.removeEventListener('timeupdate', onTimeUpdate);
           clearTimer();
-          target.pause();
+          player.pause();
           if (done) done();
           else returnToIdle('Explore my work below.');
         };
         const onTimeUpdate = () => {
-          if (target.currentTime >= clip.end - 0.04) finish();
+          if (player.currentTime >= clip.end - 0.04) finish();
         };
-        target.addEventListener('timeupdate', onTimeUpdate);
-        timer.current = setTimeout(finish, (clip.end - clip.start + 1.1) * 1000);
-        target.play().then(() => {
-          if (id === runId.current) setVisibleSource(clip.source);
-        }).catch(() => {
+        player.addEventListener('timeupdate', onTimeUpdate);
+        timer.current = setTimeout(finish, (clip.end - clip.start + 1.2) * 1000);
+        player.play().catch(() => {
           if (id !== runId.current) return;
           setVideoFailed(true);
           returnToIdle('Tap a gesture to try again.');
         });
       };
-      target.currentTime = clip.start;
-      if (target.seeking) target.addEventListener('seeked', onSeeked, { once: true });
+      player.currentTime = clip.start;
+      if (player.seeking) player.addEventListener('seeked', onSeeked, { once: true });
       else onSeeked();
     };
 
-    if (target.readyState >= 1) startPlayback();
-    else target.addEventListener('loadedmetadata', startPlayback, { once: true });
-  }, [clearTimer, returnToIdle, videoFor]);
+    if (player.readyState >= 1) startPlayback();
+    else player.addEventListener('loadedmetadata', startPlayback, { once: true });
+  }, [clearTimer, returnToIdle]);
 
   const greet = useCallback(() => {
     playGesture('GREETING', () => playGesture('WAVING', () => returnToIdle('Explore my work below.')));
@@ -167,29 +157,28 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
 
   const handlePointerLeave = useCallback(() => {
     activeZone.current = null;
-    if (state !== 'IDLE' && state !== 'RETURN_TO_IDLE') returnToIdle();
-  }, [returnToIdle, state]);
+    if (stateRef.current !== 'IDLE' && stateRef.current !== 'RETURN_TO_IDLE') returnToIdle();
+  }, [returnToIdle]);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     reducedMotion.current = media.matches;
     const update = () => { reducedMotion.current = media.matches; };
     media.addEventListener('change', update);
-    const idle = fullVideo.current;
+    const player = video.current;
     const prepareIdle = () => {
-      if (!idle || stateRef.current !== 'IDLE') return;
-      idle.pause();
-      if (Math.abs(idle.currentTime - 0.08) > 0.06) idle.currentTime = 0.08;
-      setVisibleSource('idle');
+      if (!player || stateRef.current !== 'IDLE') return;
+      player.pause();
+      if (Math.abs(player.currentTime - 0.08) > 0.06) player.currentTime = 0.08;
+      setVideoReady(true);
     };
-    if (idle?.readyState && idle.readyState >= 1) prepareIdle();
-    else idle?.addEventListener('loadedmetadata', prepareIdle, { once: true });
+    if (player?.readyState && player.readyState >= 1) prepareIdle();
+    else player?.addEventListener('loadedmetadata', prepareIdle, { once: true });
     return () => {
       media.removeEventListener('change', update);
       clearTimer();
       runId.current += 1;
-      upperVideo.current?.pause();
-      fullVideo.current?.pause();
+      player?.pause();
     };
   }, [clearTimer]);
 
@@ -197,8 +186,7 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
     <div className="stage-orbit orbit-a"/><div className="stage-orbit orbit-b"/><div className="stage-glow"/>
     <div className="character-label"><span className="live-dot"/> INTERACTIVE DIGITAL INTRODUCTION</div>
     <div className="character-frame">
-      <video ref={fullVideo} className={`character-video ${visibleSource === 'idle' ? 'character-video-idle visible' : visibleSource === 'full' ? 'character-video-gesture visible' : 'character-video-idle'}`} playsInline muted preload="auto" onLoadedMetadata={() => { const el = fullVideo.current; if (el && stateRef.current === 'IDLE') { el.currentTime = 0.08; setVisibleSource('idle'); } }} onError={() => setVideoFailed(true)} aria-label="Zeeshan standing and looking left"/>
-      <video ref={upperVideo} className={`character-video character-video-gesture ${visibleSource === 'upper' ? 'visible' : ''}`} playsInline muted preload="auto" onError={() => setVideoFailed(true)} aria-label="Zeeshan looking right, greeting and waving"/>
+      <video ref={video} className={`character-video character-video-idle ${videoReady ? 'visible' : ''}`} src="/videos/zeeshan-full-body-clean.mp4" playsInline muted preload="auto" onLoadedMetadata={() => { const player = video.current; if (player && stateRef.current === 'IDLE') { player.currentTime = 0.08; setVideoReady(true); } }} onError={() => setVideoFailed(true)} aria-label="Zeeshan standing, turning, greeting and waving"/>
       <div className="character-bottom-glow"/>
     </div>
     <div className="interaction-caption"><Sparkles size={14}/><span>{hint}</span></div>
@@ -207,7 +195,7 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
       <button type="button" onClick={() => triggerZone('center', true)}>Say hello <span>✦</span></button>
       <button type="button" onClick={() => triggerZone('right', true)}>Look right</button>
     </div>
-    {videoFailed && <span className="asset-note">A character video could not load. Refresh the page to retry.</span>}
+    {videoFailed && <span className="asset-note">The character video could not load. Refresh the page to retry.</span>}
   </div>;
 }
 

@@ -19,7 +19,7 @@ const answers: Record<string, string> = {
 };
 
 export default function HeroExperience() {
-  const video = useRef<HTMLVideoElement>(null);
+  const video = useRef<HTMLVideoElement | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [state, setState] = useState<State>('IDLE');
   const [hint, setHint] = useState('Move your cursor around to say hello');

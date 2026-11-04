@@ -37,4 +37,4 @@ The source ranges are configured in \`src/components/HeroExperience.tsx\` under 
 
 ## Assistant and scope
 
-The assistant is a local scripted UI demo, not a connected LLM or live backend. Hero, navigation, expertise preview, project cue and contact CTA are implemented as a focused Phase 1 shell. Full portfolio sections and live chatbot integration remain separate scope. The existing Phase 0 planning documents are preserved.
+The assistant is a local scripted UI demo, not a connected LLM or live backend. The portfolio includes About, Expertise, Selected Work, Experience, Contact and footer sections. Project descriptions are deliberately qualitative; no unverified performance metrics are claimed. The assistant is a local scripted demonstration, not a connected LLM or backend. The existing Phase 0 planning documents are preserved.

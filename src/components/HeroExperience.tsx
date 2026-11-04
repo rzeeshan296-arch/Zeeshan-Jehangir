@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Bot, Code2, Menu, Send, Sparkles, X } from 'lucide-react';
+import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Bot, Menu, Send, Sparkles, X } from 'lucide-react';
 
 type State = 'IDLE' | 'LOOK_LEFT' | 'LOOK_RIGHT' | 'GREETING' | 'WAVING';
 type Clip = { src: string; start: number; end: number };
@@ -63,7 +63,7 @@ export default function HeroExperience() {
     const update = () => setMobile(mq.matches);
     update(); mq.addEventListener('change',update); idle();
     return () => { mq.removeEventListener('change',update); clear(); };
-  },[clear]);
+  },[clear,idle]);
 
   const zone = (where:'left'|'right'|'center') => {
     if(where==='left') play('LOOK_LEFT','Someone exploring from the left?');
@@ -96,7 +96,7 @@ export default function HeroExperience() {
         <div className="trust-row"><div className="trust-avatars"><span>Z</span><span>SEO</span><span>AI</span></div><p>Strategy-led. Data-informed.<br/><strong>Focused on meaningful growth.</strong></p></div>
       </div>
 
-      <div className="character-stage" onMouseLeave={()=>{if(!mobile) idle();}}>
+      <div className={`character-stage state-${state.toLowerCase()}`} onMouseLeave={()=>{if(!mobile) idle();}}>
         <div className="stage-orbit orbit-a"/><div className="stage-orbit orbit-b"/><div className="stage-glow"/>
         <div className="character-label"><span className="live-dot"/> INTERACTIVE DIGITAL INTRODUCTION</div>
         <div className="character-frame">

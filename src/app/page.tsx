@@ -1,2 +1,3 @@
 import HeroExperience from '@/components/HeroExperience';
-export default function Home() { return <main><HeroExperience /></main>; }
+import PortfolioSections from '@/components/PortfolioSections';
+export default function Home() { return <main><HeroExperience /><PortfolioSections /></main>; }

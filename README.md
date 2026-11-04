@@ -5,7 +5,7 @@ A Next.js App Router, React, TypeScript and Tailwind CSS v4 portfolio foundation
 ## Run locally
 
 \`\`\`bash
-npm install
+npm ci
 npm run dev
 \`\`\`
 

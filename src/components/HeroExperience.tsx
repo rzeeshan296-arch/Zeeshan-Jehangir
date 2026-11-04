@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Bot, Menu, Send, Sparkles, X } from 'lucide-react';
 
 type State = 'IDLE' | 'LOOK_LEFT' | 'LOOK_RIGHT' | 'GREETING' | 'WAVING' | 'RETURN_TO_IDLE';
@@ -32,6 +32,8 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
   const lastInteractionAt = useRef(0);
   const reducedMotion = useRef(false);
   const [state, setState] = useState<State>('IDLE');
+  const stateRef = useRef<State>('IDLE');
+  stateRef.current = state;
   const [hint, setHint] = useState('Move across the character to interact');
   const [visibleSource, setVisibleSource] = useState<'idle' | Source>('idle');
   const [videoFailed, setVideoFailed] = useState(false);
@@ -155,7 +157,7 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
     else greet();
   }, [greet, playGesture]);
 
-  const handlePointerMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
     if (mobile || event.pointerType !== 'mouse') return;
     if ((event.target as HTMLElement).closest('button')) return;
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -175,7 +177,7 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
     media.addEventListener('change', update);
     const idle = fullVideo.current;
     const prepareIdle = () => {
-      if (!idle || state !== 'IDLE') return;
+      if (!idle || stateRef.current !== 'IDLE') return;
       idle.pause();
       if (Math.abs(idle.currentTime - 0.08) > 0.06) idle.currentTime = 0.08;
       setVisibleSource('idle');
@@ -189,15 +191,14 @@ function CharacterInteraction({ mobile }: { mobile: boolean }) {
       upperVideo.current?.pause();
       fullVideo.current?.pause();
     };
-  }, [clearTimer, state]);
+  }, [clearTimer]);
 
   return <div className={`character-stage state-${state.toLowerCase()}`} onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave}>
     <div className="stage-orbit orbit-a"/><div className="stage-orbit orbit-b"/><div className="stage-glow"/>
     <div className="character-label"><span className="live-dot"/> INTERACTIVE DIGITAL INTRODUCTION</div>
     <div className="character-frame">
-      <video ref={fullVideo} className={`character-video character-video-idle ${visibleSource === 'idle' ? 'visible' : ''}`} playsInline muted preload="auto" onLoadedMetadata={() => { const el = fullVideo.current; if (el && state === 'IDLE') { el.currentTime = 0.08; setVisibleSource('idle'); } }} onError={() => setVideoFailed(true)} aria-label="Zeeshan standing in a neutral pose"/>
-      <video ref={upperVideo} className={`character-video character-video-gesture ${visibleSource === 'upper' ? 'visible' : ''}`} playsInline muted preload="auto" onError={() => setVideoFailed(true)} aria-label="Zeeshan greeting and waving"/>
-      <video className={`character-video character-video-gesture character-video-full ${visibleSource === 'full' ? 'visible' : ''}`} ref={undefined} playsInline muted preload="auto" aria-hidden="true" tabIndex={-1} style={{ display: 'none' }}/>
+      <video ref={fullVideo} className={`character-video ${visibleSource === 'idle' ? 'character-video-idle visible' : visibleSource === 'full' ? 'character-video-gesture visible' : 'character-video-idle'}`} playsInline muted preload="auto" onLoadedMetadata={() => { const el = fullVideo.current; if (el && stateRef.current === 'IDLE') { el.currentTime = 0.08; setVisibleSource('idle'); } }} onError={() => setVideoFailed(true)} aria-label="Zeeshan standing and looking left"/>
+      <video ref={upperVideo} className={`character-video character-video-gesture ${visibleSource === 'upper' ? 'visible' : ''}`} playsInline muted preload="auto" onError={() => setVideoFailed(true)} aria-label="Zeeshan looking right, greeting and waving"/>
       <div className="character-bottom-glow"/>
     </div>
     <div className="interaction-caption"><Sparkles size={14}/><span>{hint}</span></div>

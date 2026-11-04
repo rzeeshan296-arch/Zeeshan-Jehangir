@@ -120,19 +120,6 @@ export default function HeroExperience() {
 
     <div className="hero-footer wrap"><div className="scroll-cue"><span className="scroll-icon"><ArrowDown size={15}/></span><span>SCROLL TO EXPLORE</span><span className="scroll-line"/></div><div className="footer-specialties"><span>SEO</span><i/><span>LOCAL SEARCH</span><i/><span>AI AUTOMATION</span><i/><span>DIGITAL STRATEGY</span></div><div className="hero-count">01 <span>/</span> 05</div></div>
 
-    <section className="below-fold wrap" id="about"><div className="section-kicker">A PRACTICAL GROWTH PARTNER</div><h2>Make your digital presence<br/><em>work harder.</em></h2><p>From search foundations to AI-powered workflows, I connect strategy and execution to help businesses move forward with clarity.</p>
-      <div className="below-cards" id="expertise"><article><Code2/><b>Search &amp; visibility</b><span>SEO, technical foundations and local discovery.</span></article><article><Sparkles/><b>AI &amp; automation</b><span>Useful AI experiences and streamlined workflows.</span></article><article id="projects"><ArrowUpRight/><b>Digital experiences</b><span>Modern websites and performance-led marketing.</span></article></div>
-      <div id="contact" className="contact-strip"><div><small>HAVE A PROJECT IN MIND?</small><strong>Let’s turn the next challenge into progress.</strong></div><a href="mailto:hello@zeeshanjehangir.com">Start a conversation <ArrowUpRight size={17}/></a></div>
-    </section>
 
-    <button className="assistant-fab" onClick={()=>setChat(!chat)} aria-label={chat?'Close AI assistant':'Open AI assistant'}>{chat?<X/>:<><Bot/><span className="fab-spark">✦</span></>}</button>
-    {chat&&<div className="chat-panel" role="dialog" aria-label="Portfolio AI assistant">
-      <div className="chat-head"><span className="chat-avatar"><Bot size={18}/></span><div><strong>Portfolio Assistant</strong><small><i/> Online • Ask about my work</small></div><button onClick={()=>setChat(false)} aria-label="Close chat"><X size={17}/></button></div>
-      <div className="chat-body"><div className="chat-intro"><span className="chat-spark"><Sparkles size={16}/></span><b>How can I help?</b><p>Choose a topic or type your question.</p></div>
-        {messages.map((m,i)=><div key={i} className={'chat-bubble '+m.from}>{m.text}</div>)}
-        <div className="quick-prompts"><button onClick={()=>send('Tell me about SEO services')}>SEO services</button><button onClick={()=>send('What is Local SEO?')}>Local SEO</button><button onClick={()=>send('Tell me about AI automation')}>AI automation</button></div>
-      </div>
-      <form className="chat-input" onSubmit={e=>{e.preventDefault();send();}}><input value={input} onChange={e=>setInput(e.target.value)} placeholder="Ask me something…" aria-label="Your message"/><button type="submit" aria-label="Send message" disabled={!input.trim()}><Send size={16}/></button></form>
-    </div>}
   </section>;
 }

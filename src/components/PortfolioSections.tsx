@@ -1,10 +1,10 @@
-import { ArrowUpRight, BriefcaseBusiness, ChartNoAxesCombined, Code2, ExternalLink, Globe2, MapPin, Search, Sparkles, Workflow } from 'lucide-react';
+import { ArrowUpRight, BriefcaseBusiness, BarChart3, Briefcase, Code2, ExternalLink, Globe2, MapPin, Search, Sparkles, Zap } from 'lucide-react';
 
 const services = [
   { icon: Search, number: '01', title: 'SEO & Organic Growth', text: 'Technical SEO, on-page optimization, keyword research, content structure and search visibility improvements built around real user intent.' },
   { icon: MapPin, number: '02', title: 'Local SEO & Google Business Profile', text: 'Google Business Profile optimization, local landing pages, category and service alignment, citation consistency and review strategy.' },
-  { icon: ChartNoAxesCombined, number: '03', title: 'Performance Marketing', text: 'Campaign planning and optimization across Google Ads and Meta Ads, with attention to conversion paths and lead quality.' },
-  { icon: Workflow, number: '04', title: 'AI Automation & Chat Experiences', text: 'Practical AI assistants, WhatsApp workflows and automation concepts that make customer journeys and daily operations more efficient.' },
+  { icon: BarChart3, number: '03', title: 'Performance Marketing', text: 'Campaign planning and optimization across Google Ads and Meta Ads, with attention to conversion paths and lead quality.' },
+  { icon: Zap, number: '04', title: 'AI Automation & Chat Experiences', text: 'Practical AI assistants, WhatsApp workflows and automation concepts that make customer journeys and daily operations more efficient.' },
   { icon: Code2, number: '05', title: 'Websites & Digital Experiences', text: 'WordPress and Elementor websites, Shopify storefronts, technical foundations, responsive layouts and conversion-focused improvements.' },
   { icon: Sparkles, number: '06', title: 'Content & Brand Strategy', text: 'Content planning, social media strategy, creative direction and brand communication designed to build trust over time.' },
 ];
@@ -38,7 +38,7 @@ export default function PortfolioSections() {
 
     <section className="portfolio-section projects-section" id="projects">
       <div className="section-heading section-heading-row"><div><span className="section-kicker">03 — SELECTED WORK</span><h2>Practical work.<br/><em>Real business context.</em></h2></div><p>Selected examples of client and website work. Project descriptions focus on delivered areas of work rather than unverified performance claims.</p></div>
-      <div className="projects-grid">{projects.map((project,index)=><article className="project-card" key={project.name}><div className="project-visual"><span className="project-index">0{index+1}</span><span className="project-visual-label">{project.category}</span><div className="project-visual-mark">{index===0?<MapPin/>:index===1?<Sparkles/>:index===2?<BriefcaseBusiness/>:<Globe2/>}</div><span className="project-visual-word">{project.name.split(' ')[0]}</span></div><div className="project-info"><h3>{project.name}</h3><p>{project.summary}</p><div className="project-tags">{project.tags.map(tag=><span key={tag}>{tag}</span>)}</div></div></article>)}</div>
+      <div className="projects-grid">{projects.map((project,index)=><article className="project-card" key={project.name}><div className="project-visual"><span className="project-index">0{index+1}</span><span className="project-visual-label">{project.category}</span><div className="project-visual-mark">{index===0?<MapPin/>:index===1?<Sparkles/>:index===2?<Briefcase/>:<Globe2/>}</div><span className="project-visual-word">{project.name.split(' ')[0]}</span></div><div className="project-info"><h3>{project.name}</h3><p>{project.summary}</p><div className="project-tags">{project.tags.map(tag=><span key={tag}>{tag}</span>)}</div></div></article>)}</div>
       <p className="project-disclaimer">Client names are shown as portfolio references. Detailed screenshots, analytics and confidential materials are not published here.</p>
     </section>
 

@@ -33,7 +33,7 @@ export default function HeroExperience() {
 
   const clear = useCallback(() => { if (timer.current) clearTimeout(timer.current); timer.current = null; }, []);
   const idle = useCallback((text = 'Move your cursor around to say hello') => {
-    clear(); setState('IDLE'); setHint(text);
+    clear(); setState('IDLE'); setHint(text); setVideoVisible(false);
     const el = video.current;
     if (el) { el.pause(); el.removeAttribute('src'); el.load(); }
   }, [clear]);
@@ -43,7 +43,7 @@ export default function HeroExperience() {
     const clip = clips[next]; const el = video.current;
     if (!el) { timer.current = setTimeout(() => { if (done) done(); else idle(); }, (clip.end-clip.start)*1000); return; }
     const start = () => { el.currentTime = clip.start; void el.play().catch(() => setVideoFailed(true)); };
-    if (el.getAttribute('src') !== clip.src) { el.src = clip.src; el.load(); }
+    if (el.getAttribute('src') !== clip.src) { setVideoVisible(false); setVideoFailed(false); el.src = clip.src; el.load(); }
     if (el.readyState >= 1) start(); else el.addEventListener('loadedmetadata', start, {once:true});
     const finish = () => { el.pause(); if (done) done(); else idle(); };
     const onTime = () => { if (el.currentTime >= clip.end) { el.removeEventListener('timeupdate', onTime); clear(); finish(); } };

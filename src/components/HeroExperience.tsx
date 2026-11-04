@@ -33,9 +33,15 @@ export default function HeroExperience() {
 
   const clear = useCallback(() => { if (timer.current) clearTimeout(timer.current); timer.current = null; }, []);
   const idle = useCallback((text = 'Move your cursor around to say hello') => {
-    clear(); setState('IDLE'); setHint(text); setVideoVisible(false);
+    clear(); setState('IDLE'); setHint(text);
     const el = video.current;
-    if (el) { el.pause(); el.removeAttribute('src'); el.load(); }
+    if (el) {
+      const src = '/videos/zeeshan-full-body-clean.mp4';
+      const showRest = () => { try { el.currentTime = 0.15; el.pause(); setVideoVisible(true); } catch { setVideoVisible(false); } };
+      if (el.getAttribute('src') !== src) { setVideoVisible(false); el.src = src; el.load(); el.addEventListener('loadedmetadata', showRest, { once: true }); }
+      else if (el.readyState >= 1) showRest();
+      else el.addEventListener('loadedmetadata', showRest, { once: true });
+    }
   }, [clear]);
 
   const play = useCallback((next: Exclude<State,'IDLE'>, text: string, done?: () => void) => {
@@ -55,7 +61,7 @@ export default function HeroExperience() {
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 760px)');
     const update = () => setMobile(mq.matches);
-    update(); mq.addEventListener('change',update);
+    update(); mq.addEventListener('change',update); idle();
     return () => { mq.removeEventListener('change',update); clear(); };
   },[clear]);
 

@@ -15,7 +15,7 @@ const answers: Record<string, string> = {
   seo: 'I help businesses improve organic visibility through technical SEO, on-page optimization, keyword strategy and content improvements.',
   local: 'Local SEO focuses on Google Business Profile optimization, local relevance, citations, reviews and location-focused landing pages.',
   ai: 'I design practical AI-assisted workflows, chat experiences and automations that reduce repetitive work and support lead generation.',
-  projects: 'Explore the portfolio as it develops. I focus on measurable work, transparent scope and verifiable outcomes.',
+  projects: 'Explore selected client work across local search, website strategy and digital marketing. I share the work completed and avoid unsupported performance claims.',
 };
 
 export default function HeroExperience() {
@@ -82,7 +82,7 @@ export default function HeroExperience() {
     <header className="site-header wrap">
       <a className="brand" href="#home" aria-label="Zeeshan Jehangir home"><span className="brand-mark">Z<span>.</span></span><span className="brand-copy">Zeeshan Jehangir<small>SEO &amp; AI DIGITAL GROWTH</small></span></a>
       <button className="mobile-menu-button" aria-label="Toggle navigation" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</button>
-      <nav className={menu?'main-nav open':'main-nav'} aria-label="Main navigation">{[['Home','#home'],['About','#about'],['Expertise','#expertise'],['Projects','#projects'],['Contact','#contact']].map(([label,href])=><a key={label} href={href} onClick={()=>setMenu(false)}>{label}</a>)}</nav>
+      <nav className={menu?'main-nav open':'main-nav'} aria-label="Main navigation">{[['Home','#home'],['About','#about'],['Expertise','#expertise'],['Projects','#projects'],['Experience','#experience'],['Contact','#contact']].map(([label,href])=><a key={label} href={href} onClick={()=>setMenu(false)}>{label}</a>)}</nav>
       <a className="header-cta" href="#contact">Let’s talk <ArrowUpRight size={15}/></a>
     </header>
 

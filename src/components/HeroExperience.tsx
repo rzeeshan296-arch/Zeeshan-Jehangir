@@ -128,6 +128,27 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
 
   return <>
     <div className="hero-video-background" aria-hidden="true">
+      <div className="hero-background-video-layer">
+        {clips.map((clip, index) => <video
+          key={clip.src}
+          ref={(node) => { videoRefs.current[index] = node; }}
+          className="hero-background-video"
+          src={clip.src}
+          autoPlay
+          muted={!videoSoundOn || voicePlaying}
+          loop
+          playsInline
+          preload="auto"
+          aria-label={clip.label}
+          onLoadedData={() => { if (index === 0 && !reducedMotion && active === 0) videoRefs.current[0]?.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); }}
+          onEnded={() => { if (index === active) void advance(index); }}
+          onError={() => onError(index)}
+        />)}
+        {failedCount === clips.length && <div className="video-fallback">
+          <span className="fallback-orbit"><Bot size={38} /></span><strong>Character video is unavailable</strong>
+          <p>Add <code>hero-environment.mp4</code> to <code>public/videos/</code> to enable the animated introduction.</p>
+        </div>}
+      </div>
     </div>
     <audio
       ref={audioRef}
@@ -138,26 +159,6 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
       onEnded={() => { setVoicePlaying(false); onCalloutHighlight(false); }}
       onTimeUpdate={(event) => onCalloutHighlight(event.currentTarget.currentTime >= 7.2)}
     />
-    
-    
-    <div className="hero-background-video-layer">
-      {clips.map((clip, index) => <video
-        key={clip.src}
-        ref={(node) => { videoRefs.current[index] = node; }}
-        className="hero-background-video"
-        src={clip.src} autoPlay muted={!videoSoundOn || voicePlaying} loop playsInline preload="auto"
-        aria-label={clip.label}
-        onLoadedData={() => { if (index === 0 && !reducedMotion && active === 0) videoRefs.current[0]?.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); }}
-        onEnded={() => { if (index === active) void advance(index); }}
-        onError={() => onError(index)}
-      />)}
-      {failedCount === clips.length && <div className="video-fallback">
-        <span className="fallback-orbit"><Bot size={38} /></span><strong>Character video is unavailable</strong>
-        <p>Add <code>hero-environment.mp4</code> to <code>public/videos/</code> to enable the animated introduction.</p>
-      </div>}
-
-    </div>
-
     <div className="hero-voice-controls">
       <button className={videoSoundOn ? "voice-toggle is-playing" : "voice-toggle"} type="button" onClick={() => {
         const video = videoRefs.current[active];

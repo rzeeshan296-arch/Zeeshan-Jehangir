@@ -49,6 +49,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
   const [voiceAvailable, setVoiceAvailable] = useState(false);
   const [voiceMissing, setVoiceMissing] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
+  const [videoSoundOn, setVideoSoundOn] = useState(false);
 
   const play = useCallback(async (index: number) => {
     const video = videoRefs.current[index];
@@ -105,6 +106,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     }
     audio.pause();
     audio.currentTime = 0;
+    setVideoSoundOn(false);
     onCalloutHighlight(false);
     const firstVideo = videoRefs.current[0];
     videoRefs.current.forEach((video) => video?.pause());
@@ -141,7 +143,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
         key={clip.src}
         ref={(node) => { videoRefs.current[index] = node; }}
         className={index === active ? 'character-sequence-video is-active' : 'character-sequence-video'}
-        src={clip.src} muted playsInline preload={index === 0 ? 'auto' : 'none'}
+        src={clip.src} muted={!videoSoundOn || voicePlaying} playsInline preload={index === 0 ? 'auto' : 'none'}
         aria-label={clip.label}
         onLoadedData={() => { if (index === 0 && !reducedMotion && active === 0) videoRefs.current[0]?.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); }}
         onEnded={() => { if (index === active) void advance(index); }}
@@ -155,6 +157,17 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     </div>
     <div className="media-caption"><span>ZEESHAN JEHANGIR</span><b>SEO / AI / DIGITAL GROWTH</b></div>
     <div className="hero-voice-controls">
+      <button className={videoSoundOn ? "voice-toggle is-playing" : "voice-toggle"} type="button" onClick={() => {
+        const next = !videoSoundOn;
+        if (voicePlaying && audioRef.current) {
+          audioRef.current.pause();
+          setVoicePlaying(false);
+        }
+        setVideoSoundOn(next);
+      }} aria-label={videoSoundOn ? "Turn original video sound off" : "Turn original video sound on"}>
+        {videoSoundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
+        {videoSoundOn ? "Video sound on" : "Video sound off"}
+      </button>
       <button className={voicePlaying ? 'voice-toggle is-playing' : 'voice-toggle'} type="button" onClick={() => void toggleVoice()} aria-label={voicePlaying ? 'Turn voice introduction off' : 'Play voice introduction'}>
         {voicePlaying ? <VolumeX size={15} /> : <Volume2 size={15} />}
         {voiceMissing ? 'Add voice recording' : voicePlaying ? 'Voice on · click to stop' : 'Hear my welcome'}

@@ -1,19 +1,10 @@
 # Hero character video
 
-The portfolio uses one approved, clean full-body video:
+The hero uses one video asset at `/videos/zeeshan-hero.mp4`.
 
-- `zeeshan-full-body-clean.mp4`
-- 1280 × 720, 24 fps, 7.93 seconds
-- Neutral standing pose, head turn, greeting and wave sequence.
+- Source: `Man_walking_in_studio_f57850eb_t3.6-8.mp4`
+- Original: 1280 × 720, 24 fps, approximately 4.33 seconds
+- Presentation: black side bars cropped from the source frame while preserving the complete person and original proportions
+- Playback: muted, inline, autoplay and loop; reduced-motion preference pauses playback
 
-The application uses this single file for the idle hero character and all interaction states. The former upper-body asset is no longer used.
-
-## Interaction timing
-
-- IDLE: first neutral frame (0.08s)
-- LOOK_LEFT: approximately 0.45–2.05s
-- LOOK_RIGHT: approximately 2.25–3.10s
-- GREETING: approximately 3.00–4.35s
-- WAVING: approximately 4.50–6.25s
-
-The Pavo-watermarked source remains excluded.
+The source is cropped and re-encoded at high quality for the web. No previous hero footage, watermarked clip, gesture simulation, or CSS character is used.

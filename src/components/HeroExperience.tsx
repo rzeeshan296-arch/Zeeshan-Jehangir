@@ -84,13 +84,6 @@ export default function HeroExperience() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<{from:'bot'|'you';text:string}[]>([{from:'bot',text:'Hi! I’m the portfolio assistant. What would you like to explore?'}]);
 
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 760px)');
-    const update = () => setMobile(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
 
   const send = (value=input) => {
     const text=value.trim(); if(!text) return;

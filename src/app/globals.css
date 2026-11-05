@@ -211,3 +211,165 @@
  .hero-robot{right:-2%;top:1%;transform:scale(.62)}
  .media-caption{font-size:6px;gap:8px;padding:6px 9px}
 }
+
+
+/* FINAL CINEMATIC HERO — extend the source environment into the full viewport. */
+.phase-two-hero{
+  min-height:100svh;
+  isolation:isolate;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 76% 48%,rgba(23,112,218,.28) 0%,rgba(10,57,119,.15) 34%,transparent 66%),
+    radial-gradient(ellipse at 53% 100%,rgba(12,91,177,.22),transparent 58%),
+    linear-gradient(112deg,#041329 0%,#061a36 38%,#08254a 72%,#04152d 100%);
+}
+.phase-two-hero::before{
+  content:"";
+  position:absolute;inset:74px 0 0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(3,15,33,.96) 0%,rgba(4,19,41,.91) 27%,rgba(5,24,50,.56) 46%,rgba(5,23,48,.08) 72%,rgba(4,17,36,.12) 100%),
+    radial-gradient(ellipse at 78% 45%,rgba(42,148,255,.18),transparent 48%),
+    repeating-linear-gradient(0deg,transparent 0 71px,rgba(80,161,241,.045) 72px,transparent 73px),
+    repeating-linear-gradient(90deg,transparent 0 94px,rgba(80,161,241,.04) 95px,transparent 96px);
+}
+.phase-two-hero::after{
+  content:"";position:absolute;inset:92px 0 0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent 0 49.8%,rgba(93,174,255,.08) 50%,transparent 50.2%),
+    linear-gradient(0deg,transparent 0 79%,rgba(93,174,255,.08) 79.1%,transparent 79.3%);
+  mask-image:linear-gradient(90deg,transparent,#000 35%,#000 100%);
+}
+.phase-two-grid{z-index:1;opacity:.48;mask-image:linear-gradient(90deg,transparent 0%,#000 45%,#000 100%)}
+.phase-two-ambient.ambient-left{width:560px;height:560px;left:-310px;top:25%;background:radial-gradient(circle,rgba(19,103,205,.2),transparent 70%)}
+.phase-two-ambient.ambient-right{width:760px;height:760px;right:-260px;top:8%;background:radial-gradient(circle,rgba(27,122,225,.24),transparent 69%)}
+.phase-two-header{height:82px;border-bottom:1px solid rgba(130,184,242,.13)}
+.phase-two-brand .brand-mark{background:linear-gradient(145deg,#174d89,#0a2a52);border:1px solid rgba(125,190,255,.28);box-shadow:0 0 26px rgba(31,127,228,.2)}
+.phase-two-brand .brand-copy{color:#eff7ff}
+.phase-two-brand .brand-copy small{color:#80a8d2}
+.phase-two-nav a{color:#b3c9e3}
+.phase-two-nav a:hover{color:#75bdff}
+.phase-two-header-cta{border-color:rgba(132,186,245,.28);background:rgba(8,35,69,.52);color:#e8f3ff}
+.phase-two-content{
+  width:min(1500px,calc(100% - 88px));
+  min-height:calc(100svh - 150px);
+  grid-template-columns:minmax(350px,.82fr) minmax(570px,1.18fr);
+  gap:clamp(10px,2vw,28px);
+  padding:20px 0 36px;
+}
+.phase-two-copy{max-width:640px;padding:10px 0 24px}
+.phase-two-eyebrow{color:#a1c9f5}
+.phase-two-name{color:#b5c9e2}
+.phase-two-role{color:#8bc7ff}
+.phase-two-copy h1{font-size:clamp(43px,4.6vw,68px);letter-spacing:-3.4px;text-shadow:0 3px 28px rgba(0,0,0,.2)}
+.phase-two-copy h1 em{color:#72bdff;text-shadow:0 0 35px rgba(71,161,255,.28)}
+.phase-two-description{color:#c0d0e4}
+.phase-two-proof p{color:#9fb8d5}
+.phase-two-proof strong{color:#e1efff}
+.phase-two-primary{background:linear-gradient(115deg,#1672d2,#36a5ff);box-shadow:0 12px 34px rgba(24,123,224,.3)}
+.phase-two-secondary{background:rgba(8,33,65,.58);border-color:rgba(147,195,247,.38);color:#eff7ff}
+.phase-two-visual{
+  min-width:0;min-height:0;width:100%;overflow:visible;
+  align-self:center;justify-self:stretch;
+}
+.hero-media{
+  position:relative;width:100%;max-width:920px;height:auto;min-height:0;
+  display:block;isolation:isolate;padding:22px 0 52px;
+}
+.hero-media::before{
+  content:"";position:absolute;z-index:-1;inset:3% -3% 9% -7%;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 62% 48%,rgba(38,139,245,.2),transparent 62%),
+    linear-gradient(90deg,rgba(4,19,40,.2),rgba(8,40,77,.08) 50%,transparent);
+  filter:blur(26px);
+}
+.media-halo,.media-orbit,.media-orbit-one,.media-orbit-two{display:none}
+.media-topline{
+  top:0;left:3%;transform:none;width:94%;z-index:4;
+  color:#9fc3e9;font-size:8px;letter-spacing:1.6px
+}
+.media-topline b{color:#8bb8e7}
+.character-video-frame{
+  position:relative;width:100%;height:auto;aspect-ratio:16/9;
+  overflow:hidden;display:block;border:0;border-radius:0;background:transparent;
+  box-shadow:none;mask-image:none!important;-webkit-mask-image:none!important;
+}
+.character-sequence-video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  object-position:center center;display:block;opacity:0;pointer-events:none;
+  border:0;border-radius:0;background:transparent;
+  filter:none!important;mask-image:none!important;-webkit-mask-image:none!important;
+}
+.character-sequence-video.is-active{opacity:1}
+.video-frame-shade{display:none!important}
+.media-caption{display:none}
+.hero-voice-controls{
+  position:absolute;bottom:0;left:3%;transform:none;max-width:94%;
+  justify-content:flex-start;flex-wrap:wrap;gap:8px
+}
+.voice-toggle{background:rgba(4,22,46,.9);border-color:rgba(125,184,247,.34)}
+.voice-transcript summary{background:rgba(4,22,46,.88)}
+.voice-transcript[open]{z-index:12}
+.voice-missing-note{bottom:-23px;left:3%;transform:none}
+.video-play-prompt{bottom:78px}
+.hero-robot{
+  right:-1.5%;top:auto;bottom:9%;width:118px;
+  filter:drop-shadow(0 14px 26px rgba(0,0,0,.42))
+}
+.robot-aura{background:radial-gradient(ellipse,rgba(42,157,255,.34),transparent 72%)}
+.robot-status{background:rgba(4,23,47,.94);border-color:rgba(133,198,255,.4)}
+.visual-data-card{display:none}
+.phase-two-scroll{margin-bottom:18px;color:#9ab9dc}
+.scroll-ring{border-color:rgba(134,192,249,.42);color:#9acfff}
+.phase-two-index{color:#d4e9ff}
+@media(max-width:1100px){
+  .phase-two-content{width:min(100% - 56px,1000px);grid-template-columns:minmax(290px,.82fr) minmax(430px,1.18fr);gap:12px}
+  .phase-two-copy h1{font-size:clamp(40px,5vw,58px)}
+  .phase-two-visual{min-height:0}
+  .hero-media{height:auto;width:100%;padding-bottom:56px}
+  .character-video-frame{width:100%;height:auto;aspect-ratio:16/9}
+  .hero-robot{right:-2%;bottom:10%;top:auto;transform:scale(.86);transform-origin:bottom right}
+}
+@media(max-width:760px){
+  .phase-two-hero{min-height:100svh}
+  .phase-two-hero::before{
+    inset:74px 0 0;
+    background:
+      linear-gradient(180deg,rgba(3,15,33,.9) 0%,rgba(4,19,41,.82) 42%,rgba(5,24,50,.24) 100%),
+      radial-gradient(ellipse at 50% 80%,rgba(31,128,228,.22),transparent 58%),
+      repeating-linear-gradient(0deg,transparent 0 64px,rgba(80,161,241,.04) 65px,transparent 66px);
+  }
+  .phase-two-hero::after{display:none}
+  .phase-two-header{height:74px}
+  .phase-two-content{
+    width:calc(100% - 38px);display:flex;flex-direction:column;align-items:stretch;
+    gap:8px;min-height:0;padding:30px 0 20px
+  }
+  .phase-two-copy{order:1;max-width:620px;padding:0}
+  .phase-two-eyebrow{margin-bottom:15px}
+  .phase-two-copy h1{font-size:clamp(39px,9.8vw,56px);letter-spacing:-2.5px;line-height:1.08}
+  .phase-two-description{font-size:12px;margin:15px 0 18px}
+  .phase-two-proof{margin-top:18px}
+  .phase-two-visual{order:2;min-height:0;margin-top:0}
+  .hero-media{width:100%;max-width:none;height:auto;padding:17px 0 64px}
+  .character-video-frame{width:100%;height:auto;aspect-ratio:16/9;overflow:hidden}
+  .media-topline{top:0;left:1%;width:98%;font-size:7px}
+  .hero-voice-controls{left:1%;bottom:5px;max-width:98%;gap:6px}
+  .voice-toggle{font-size:8px;padding:8px 10px}
+  .voice-transcript summary{font-size:8px;padding:8px 10px}
+  .voice-missing-note{left:1%;bottom:-15px;font-size:7px}
+  .hero-robot{right:0;bottom:14%;top:auto;transform:scale(.7);transform-origin:bottom right}
+  .phase-two-scroll{margin:0 auto 18px}
+  .phase-two-index{display:none}
+  .phase-two-chat-backdrop{padding:10px;align-items:flex-end}
+}
+@media(max-width:420px){
+  .phase-two-content{padding-top:26px}
+  .phase-two-copy h1{font-size:clamp(36px,10vw,43px);letter-spacing:-2px}
+  .hero-media{padding-bottom:70px}
+  .hero-robot{right:-1%;bottom:16%;transform:scale(.6);transform-origin:bottom right}
+  .hero-voice-controls{gap:5px}
+  .voice-toggle{font-size:7px;padding:7px 8px;gap:5px}
+}
+@media(prefers-reduced-motion:reduce){
+  .phase-two-hero::before,.phase-two-hero::after{animation:none!important}
+}

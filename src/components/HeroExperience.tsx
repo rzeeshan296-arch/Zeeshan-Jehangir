@@ -41,7 +41,7 @@ function RobotAssistant({ onOpen, highlighted }: { onOpen: () => void; highlight
   </button>;
 }
 
-function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
+function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotion: boolean; onCalloutHighlight: (highlighted: boolean) => void }) {
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const failed = useRef<Set<number>>(new Set());
@@ -51,7 +51,6 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
   const [voiceAvailable, setVoiceAvailable] = useState(false);
   const [voiceMissing, setVoiceMissing] = useState(false);
   const [voicePlaying, setVoicePlaying] = useState(false);
-  const [calloutActive, setCalloutActive] = useState(false);
 
   const play = useCallback(async (index: number) => {
     const video = videoRefs.current[index];
@@ -107,7 +106,7 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
     }
     audio.pause();
     audio.currentTime = 0;
-    setCalloutActive(false);
+    onCalloutHighlight(false);
     const firstVideo = videoRefs.current[0];
     videoRefs.current.forEach((video) => video?.pause());
     setActive(0);
@@ -133,8 +132,8 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
       preload="metadata"
       onCanPlayThrough={() => { setVoiceAvailable(true); setVoiceMissing(false); }}
       onError={() => { setVoiceAvailable(false); setVoiceMissing(true); setVoicePlaying(false); }}
-      onEnded={() => setVoicePlaying(false)}
-      onTimeUpdate={(event) => setCalloutActive(event.currentTarget.currentTime >= 7.2)}
+      onEnded={() => { setVoicePlaying(false); onCalloutHighlight(false); }}
+      onTimeUpdate={(event) => onCalloutHighlight(event.currentTarget.currentTime >= 7.2)}
     />
     <div className="media-halo" /><div className="media-orbit media-orbit-one" /><div className="media-orbit media-orbit-two" />
     <div className="media-topline"><span><i /> LIVE INTRODUCTION</span><b>01 — 03</b></div>
@@ -177,6 +176,7 @@ export default function HeroExperience() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([{ from: 'assistant', text: 'Hello! I’m Zeeshan’s AI portfolio assistant. Ask me about SEO, local search, digital marketing or AI solutions.' }]);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [assistantCalloutActive, setAssistantCalloutActive] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -226,8 +226,8 @@ export default function HeroExperience() {
         <div className="phase-two-proof"><span className="proof-mark"><Sparkles size={15} /></span><p>Built around strategy, clarity<br /><strong>and measurable business outcomes.</strong></p></div>
       </div>
       <div className="phase-two-visual">
-        <CharacterSequence reducedMotion={reducedMotion} />
-        <RobotAssistant highlighted={false} onOpen={() => setChatOpen(true)} />
+        <CharacterSequence reducedMotion={reducedMotion} onCalloutHighlight={setAssistantCalloutActive} />
+        <RobotAssistant highlighted={assistantCalloutActive} onOpen={() => setChatOpen(true)} />
         <div className="visual-data-card data-card-top"><span>01 / SEARCH</span><b>Organic visibility</b><i>↗</i></div>
         <div className="visual-data-card data-card-bottom"><span>02 / INTELLIGENCE</span><b>AI-enabled growth</b><i>✳</i></div>
       </div>

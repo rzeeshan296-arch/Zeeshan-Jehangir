@@ -17,19 +17,15 @@ npm run lint
 npm run build
 ```
 
-## Phase 2 hero video assets
+## Immersive hero video
 
-The premium hero uses three real, muted video clips in this order:
+The hero uses one full-scene widescreen character video:
 
-| Public asset path | Sequence role |
-|---|---|
-| `public/videos/walking-entrance.mp4` | Initial entrance |
-| `public/videos/welcome.mp4` | Welcoming pose |
-| `public/videos/robot-interaction.mp4` | Character and robot interaction |
+- `public/videos/hero-environment.mp4` — Zeeshan entering the futuristic blue environment, greeting visitors, and interacting with the robot.
 
-The three optimized MP4 files are supplied in the Phase 2 hero asset ZIP. Extract the ZIP at the repository root so the files land directly in `public/videos/`. The application references the public URLs `/videos/walking-entrance.mp4`, `/videos/welcome.mp4` and `/videos/robot-interaction.mp4`.
+Place the optimized asset at that exact path. The browser requests `/videos/hero-environment.mp4`. It is H.264, 1280 × 720, 30 fps, approximately 13.37 seconds and muted. The original uploaded video is preserved separately. The previous square clips may remain in `public/videos/`, but the current hero no longer requests them.
 
-All clips are H.264, 720 × 720, 24 fps, approximately 7.9 seconds and have their audio removed. The source footage was center-cropped to remove embedded black side bars while retaining the person and robot. The sequence crossfades between clips, skips failed clips where possible, and displays an explicit fallback if all video assets are unavailable. Reduced-motion preferences pause the animation.
+The hero presentation uses responsive 16:9 sizing, soft edge masks and navy/blue atmospheric lighting rather than a visible video card. Missing media triggers the existing fallback. Reduced-motion preferences pause the animation.
 
 ## Hero interactions
 
@@ -37,8 +33,9 @@ All clips are H.264, 720 × 720, 24 fps, approximately 7.9 seconds and have thei
 - “Explore My Work” scrolls to Projects; “Let’s Talk” scrolls to Contact.
 - The floating SVG robot opens the local portfolio assistant.
 - The assistant answers common questions about SEO, local search, AI and selected work. It is a local scripted demo, not a connected LLM or external backend.
+- The voice introduction is user-triggered, with video muted by default. Add a real recording at `public/audio/hero-intro.mp3`; no placeholder voice file is included. The transcript is available in the hero controls.
 - Subtle background particles, lighting and robot motion are disabled for reduced-motion preferences.
 
 ## Deployment
 
-The project uses Next.js 15 and Node.js 20. Netlify can deploy it using its Next.js framework support with `npm run build`. Keep the three MP4 assets in `public/videos/` in the deployed branch; otherwise the hero will show its missing-media fallback.
+The project uses Next.js 15 and Node.js 20. Netlify can deploy it using its Next.js framework support with `npm run build`. Keep `hero-environment.mp4` in `public/videos/` in the deployed branch or the hero will show its missing-media fallback.

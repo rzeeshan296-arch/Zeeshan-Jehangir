@@ -4,9 +4,7 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Bot, Menu, Send, Sparkles, Volume2, VolumeX, X } from 'lucide-react';
 
 const clips = [
-  { src: '/videos/walking-entrance-trimmed.mp4', label: 'Walking entrance' },
-  { src: '/videos/welcome.mp4', label: 'Welcome' },
-  { src: '/videos/robot-interaction.mp4', label: 'Robot interaction' },
+  { src: '/videos/hero-environment.mp4', label: 'Zeeshan entering the futuristic environment and greeting the AI robot' },
 ] as const;
 
 type Message = { from: 'assistant' | 'visitor'; text: string };
@@ -137,7 +135,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
       onTimeUpdate={(event) => onCalloutHighlight(event.currentTarget.currentTime >= 7.2)}
     />
     <div className="media-halo" /><div className="media-orbit media-orbit-one" /><div className="media-orbit media-orbit-two" />
-    <div className="media-topline"><span><i /> LIVE INTRODUCTION</span><b>01 — 03</b></div>
+    <div className="media-topline"><span><i /> LIVE INTRODUCTION</span><b>01 — 01</b></div>
     <div className="character-video-frame">
       {clips.map((clip, index) => <video
         key={clip.src}
@@ -151,7 +149,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
       />)}
       {failedCount === clips.length && <div className="video-fallback">
         <span className="fallback-orbit"><Bot size={38} /></span><strong>Character video is unavailable</strong>
-        <p>Add the three MP4 files to <code>public/videos/</code> to enable the animated introduction.</p>
+        <p>Add <code>hero-environment.mp4</code> to <code>public/videos/</code> to enable the animated introduction.</p>
       </div>}
       <div className="video-frame-shade" />
     </div>

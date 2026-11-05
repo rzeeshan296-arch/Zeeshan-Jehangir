@@ -158,15 +158,31 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     <div className="media-caption"><span>ZEESHAN JEHANGIR</span><b>SEO / AI / DIGITAL GROWTH</b></div>
     <div className="hero-voice-controls">
       <button className={videoSoundOn ? "voice-toggle is-playing" : "voice-toggle"} type="button" onClick={() => {
-        const next = !videoSoundOn;
+        const video = videoRefs.current[active];
+        if (!video) return;
+        if (videoSoundOn) {
+          video.muted = true;
+          setVideoSoundOn(false);
+          return;
+        }
         if (voicePlaying && audioRef.current) {
           audioRef.current.pause();
           setVoicePlaying(false);
+          onCalloutHighlight(false);
         }
-        setVideoSoundOn(next);
-      }} aria-label={videoSoundOn ? "Turn original video sound off" : "Turn original video sound on"}>
+        // Unmute and invoke play directly inside this click handler so browsers
+        // treat it as a user-authorized media playback action.
+        video.volume = 1;
+        video.muted = false;
+        setVideoSoundOn(true);
+        void video.play().then(() => setBlocked(false)).catch(() => {
+          video.muted = true;
+          setVideoSoundOn(false);
+          setBlocked(true);
+        });
+      }} aria-label={videoSoundOn ? "Turn original video sound off" : "Enable original video sound"}>
         {videoSoundOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
-        {videoSoundOn ? "Video sound on" : "Video sound off"}
+        {videoSoundOn ? "Original sound on" : "Enable original sound"}
       </button>
       <button className={voicePlaying ? 'voice-toggle is-playing' : 'voice-toggle'} type="button" onClick={() => void toggleVoice()} aria-label={voicePlaying ? 'Turn voice introduction off' : 'Play voice introduction'}>
         {voicePlaying ? <VolumeX size={15} /> : <Volume2 size={15} />}

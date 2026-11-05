@@ -86,7 +86,7 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
     if (failed.current.has(index)) return;
     failed.current.add(index);
     setFailedCount(failed.current.size);
-    if (index === active || videoRefs.current[active]?.ended) void advance(index);
+    void advance(index);
   };
 
   return <div className="hero-media" aria-label="Animated character introduction">
@@ -97,7 +97,7 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
         key={clip.src}
         ref={(node) => { videoRefs.current[index] = node; }}
         className={index === active ? 'character-sequence-video is-active' : 'character-sequence-video'}
-        src={clip.src} muted playsInline preload={index === 0 ? 'auto' : 'metadata'}
+        src={clip.src} muted playsInline preload={index === 0 ? 'auto' : 'none'}
         aria-label={clip.label}
         onLoadedData={() => { if (index === 0 && !reducedMotion && active === 0) videoRefs.current[0]?.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); }}
         onEnded={() => { if (index === active) void advance(index); }}

@@ -252,8 +252,8 @@ export default function HeroExperience() {
         <div className="phase-two-actions"><a className="phase-two-primary" href="#projects">Explore My Work <ArrowUpRight size={17} /></a><a className="phase-two-secondary" href="#contact">Let’s Talk <ArrowRight size={17} /></a></div>
         <div className="phase-two-proof"><span className="proof-mark"><Sparkles size={15} /></span><p>Built around strategy, clarity<br /><strong>and measurable business outcomes.</strong></p></div>
       </div>
-      <RobotAssistant highlighted={assistantCalloutActive} onOpen={() => setChatOpen(true)} />
     </div>
+    <RobotAssistant highlighted={assistantCalloutActive} onOpen={() => setChatOpen(true)} />
 
     <a className="phase-two-scroll" href="#about"><span className="scroll-ring"><ArrowDown size={15} /></span><span>SCROLL TO EXPLORE</span><i /></a>
     <div className="phase-two-index" aria-hidden="true">01 <span>/</span> 05</div>

@@ -611,3 +611,96 @@
   .hero-background-video{scroll-behavior:auto}
   .hero-robot,.hero-robot .robot-status,.hero-robot .robot-status.is-highlighted{animation:none!important}
 }
+
+
+/* Final hero framing refinements: preserve the source video and its full frame. */
+.phase-two-hero::before{
+  background:
+    linear-gradient(90deg,
+      rgba(15,43,85,.98) 0%,
+      rgba(15,43,85,.95) 20%,
+      rgba(15,43,85,.88) 36%,
+      rgba(15,43,85,.66) 49%,
+      rgba(15,43,85,.34) 64%,
+      rgba(15,43,85,.10) 82%,
+      rgba(15,43,85,.04) 100%),
+    linear-gradient(0deg,
+      rgba(4,17,36,.48) 0%,
+      rgba(4,17,36,.10) 18%,
+      transparent 34%,
+      transparent 82%,
+      rgba(4,17,36,.18) 100%);
+}
+.hero-background-video{
+  object-fit:cover;
+  object-position:50% 50%;
+  filter:saturate(1.04) contrast(1.02);
+}
+/* On extra-wide displays, contain the original 16:9 frame rather than
+   sacrificing the top of the head or the bottom of the shoes. */
+@media (min-width:1200px) and (min-aspect-ratio:19/10){
+  .hero-background-video{
+    object-fit:contain;
+    object-position:center center;
+  }
+}
+.hero-robot{
+  top:clamp(118px,19vh,190px);
+  right:clamp(26px,5vw,82px);
+  bottom:auto;
+  width:116px;
+  transform:scale(.94);
+  transform-origin:top right;
+}
+@media(max-width:1100px){
+  .hero-background-video{
+    object-fit:cover;
+    object-position:50% 50%;
+  }
+  .hero-robot{
+    top:116px;
+    right:22px;
+    bottom:auto;
+    width:108px;
+    transform:scale(.82);
+    transform-origin:top right;
+  }
+}
+@media(max-width:760px){
+  .phase-two-hero::before{
+    background:
+      linear-gradient(180deg,
+        rgba(15,43,85,.96) 0%,
+        rgba(15,43,85,.93) 24%,
+        rgba(15,43,85,.82) 47%,
+        rgba(15,43,85,.57) 70%,
+        rgba(15,43,85,.38) 100%),
+      linear-gradient(90deg,rgba(15,43,85,.42),rgba(15,43,85,.08));
+  }
+  .hero-background-video{
+    object-fit:cover;
+    object-position:50% 50%;
+  }
+  .hero-robot{
+    top:104px;
+    right:12px;
+    bottom:auto;
+    width:100px;
+    transform:scale(.68);
+    transform-origin:top right;
+  }
+  .hero-voice-controls{
+    bottom:15px;
+    left:19px;
+    right:19px;
+  }
+}
+@media(max-width:420px){
+  .hero-robot{
+    top:100px;
+    right:8px;
+    bottom:auto;
+    transform:scale(.60);
+    transform-origin:top right;
+  }
+}

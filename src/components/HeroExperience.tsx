@@ -134,7 +134,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
           ref={(node) => { videoRefs.current[index] = node; }}
           className="hero-background-video"
           src={clip.src}
-          autoPlay
+          autoPlay={!reducedMotion}
           muted={!videoSoundOn || voicePlaying}
           loop
           playsInline

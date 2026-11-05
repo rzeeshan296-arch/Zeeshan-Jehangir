@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+<defs>
+ <linearGradient id="wall" x2="0" y2="1"><stop stop-color="#f8fbff"/><stop offset="1" stop-color="#dce9f7"/></linearGradient>
+ <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#dce9f7"/><stop offset="1" stop-color="#a9c6e6"/></linearGradient>
+ <linearGradient id="suit" x2="1" y2="1"><stop stop-color="#152c4b"/><stop offset="1" stop-color="#07172d"/></linearGradient>
+ <radialGradient id="light"><stop stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1920" height="1080" fill="#0f2b55"/>
+<rect x="350" width="1220" height="900" fill="url(#wall)"/>
+<path d="M350 0H0V900L350 760Z" fill="#0b2346"/>
+<path d="M1570 0h350v900l-350-140Z" fill="#123d70"/>
+<path d="M350 900h1220l350 180H0Z" fill="url(#floor)"/>
+<ellipse cx="960" cy="920" rx="330" ry="70" fill="url(#light)" opacity=".65"/>
+<path d="M770 1080 825 650Q840 585 900 570h120q60 15 75 80l55 430Z" fill="url(#suit)"/>
+<path d="M895 570h130l-18 150-48 70-47-70Z" fill="#f1f6fc"/>
+<path d="M930 585h60l-30 100Z" fill="#173b65"/>
+<path d="M840 650 770 1080h-95l78-440q20-45 87-40Z" fill="#142c4b"/>
+<path d="M1080 650 1150 1080h95l-78-440q-20-45-87-40Z" fill="#142c4b"/>
+<path d="M825 1030h110l-8 50H760q0-36 65-50ZM985 1030h110l65 50H993Z" fill="#07172d"/>
+<path d="M870 440q0-115 90-115t90 115q0 95-90 95t-90-95Z" fill="#c58f70"/>
+<path d="M866 435q-10-122 91-130 104 7 98 126l-24-43-23-49q-55 35-133 23l-9 73Z" fill="#172338"/>
+<path d="M875 448q-8 64 20 86" fill="none" stroke="#a66e57" stroke-width="8" opacity=".5"/>
+<path d="M920 466q13 8 27 0M975 466q13 8 27 0" fill="none" stroke="#27364b" stroke-width="5" stroke-linecap="round"/>
+<path d="M938 502q22 14 44 0" fill="none" stroke="#754c40" stroke-width="5" stroke-linecap="round"/>
+<path d="M865 430q18-95 98-93 80-1 95 91-48-40-92-40-51 0-101 42Z" fill="#172338"/>
+<rect width="1920" height="1080" fill="url(#light)" opacity=".2"/>
+</svg>

@@ -102,6 +102,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     if (!audio.paused) {
       audio.pause();
       setVoicePlaying(false);
+      onCalloutHighlight(false);
       return;
     }
     audio.pause();
@@ -130,7 +131,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
       ref={audioRef}
       src="/audio/hero-intro.mp3"
       preload="metadata"
-      onCanPlayThrough={() => { setVoiceAvailable(true); setVoiceMissing(false); }}
+      onCanPlay={() => { setVoiceAvailable(true); setVoiceMissing(false); }}
       onError={() => { setVoiceAvailable(false); setVoiceMissing(true); setVoicePlaying(false); }}
       onEnded={() => { setVoicePlaying(false); onCalloutHighlight(false); }}
       onTimeUpdate={(event) => onCalloutHighlight(event.currentTarget.currentTime >= 7.2)}

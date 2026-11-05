@@ -139,6 +139,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
           loop
           playsInline
           preload="auto"
+          poster="/images/hero-opening-poster.svg"
           aria-label={clip.label}
           onLoadedData={() => { if (index === 0 && !reducedMotion && active === 0) videoRefs.current[0]?.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); }}
           onEnded={() => { if (index === active) void advance(index); }}

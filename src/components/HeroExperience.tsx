@@ -126,7 +126,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     }
   };
 
-  return <div className="hero-media" aria-label="Animated character introduction">
+  return <div className="hero-video-background" aria-label="Full-screen cinematic background video">
     <audio
       ref={audioRef}
       src="/audio/hero-intro.mp3"
@@ -136,14 +136,14 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
       onEnded={() => { setVoicePlaying(false); onCalloutHighlight(false); }}
       onTimeUpdate={(event) => onCalloutHighlight(event.currentTarget.currentTime >= 7.2)}
     />
-    <div className="media-halo" /><div className="media-orbit media-orbit-one" /><div className="media-orbit media-orbit-two" />
-    <div className="media-topline"><span><i /> LIVE INTRODUCTION</span><b>01 — 01</b></div>
-    <div className="character-video-frame">
+    
+    
+    <div className="hero-background-video-layer">
       {clips.map((clip, index) => <video
         key={clip.src}
         ref={(node) => { videoRefs.current[index] = node; }}
-        className={index === active ? 'character-sequence-video is-active' : 'character-sequence-video'}
-        src={clip.src} muted={!videoSoundOn || voicePlaying} playsInline preload={index === 0 ? 'auto' : 'none'}
+        className="hero-background-video"
+        src={clip.src} autoPlay muted={!videoSoundOn || voicePlaying} loop playsInline preload="auto"
         aria-label={clip.label}
         onLoadedData={() => { if (index === 0 && !reducedMotion && active === 0) videoRefs.current[0]?.play().then(() => setBlocked(false)).catch(() => setBlocked(true)); }}
         onEnded={() => { if (index === active) void advance(index); }}
@@ -153,9 +153,9 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
         <span className="fallback-orbit"><Bot size={38} /></span><strong>Character video is unavailable</strong>
         <p>Add <code>hero-environment.mp4</code> to <code>public/videos/</code> to enable the animated introduction.</p>
       </div>}
-      <div className="video-frame-shade" />
+
     </div>
-    <div className="media-caption"><span>ZEESHAN JEHANGIR</span><b>SEO / AI / DIGITAL GROWTH</b></div>
+
     <div className="hero-voice-controls">
       <button className={videoSoundOn ? "voice-toggle is-playing" : "voice-toggle"} type="button" onClick={() => {
         const video = videoRefs.current[active];
@@ -232,8 +232,7 @@ export default function HeroExperience() {
   };
 
   return <section className="hero-shell phase-two-hero" id="home" onMouseMove={pointerMove}>
-    <div className="phase-two-grid" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /></div>
-    <div className="phase-two-ambient ambient-left" /><div className="phase-two-ambient ambient-right" />
+    <div className="hero-background-atmosphere" aria-hidden="true" />
     <header className="site-header wrap phase-two-header">
       <a className="brand phase-two-brand" href="#home" aria-label="Zeeshan Jehangir home"><span className="brand-mark">Z<span>.</span></span><span className="brand-copy">Zeeshan Jehangir<small>SEO &amp; AI DIGITAL GROWTH</small></span></a>
       <button className="mobile-menu-button phase-two-menu-button" type="button" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)}>{menuOpen ? <X /> : <Menu />}</button>
@@ -253,12 +252,7 @@ export default function HeroExperience() {
         <div className="phase-two-actions"><a className="phase-two-primary" href="#projects">Explore My Work <ArrowUpRight size={17} /></a><a className="phase-two-secondary" href="#contact">Let’s Talk <ArrowRight size={17} /></a></div>
         <div className="phase-two-proof"><span className="proof-mark"><Sparkles size={15} /></span><p>Built around strategy, clarity<br /><strong>and measurable business outcomes.</strong></p></div>
       </div>
-      <div className="phase-two-visual">
-        <CharacterSequence reducedMotion={reducedMotion} onCalloutHighlight={setAssistantCalloutActive} />
-        <RobotAssistant highlighted={assistantCalloutActive} onOpen={() => setChatOpen(true)} />
-        <div className="visual-data-card data-card-top"><span>01 / SEARCH</span><b>Organic visibility</b><i>↗</i></div>
-        <div className="visual-data-card data-card-bottom"><span>02 / INTELLIGENCE</span><b>AI-enabled growth</b><i>✳</i></div>
-      </div>
+      <RobotAssistant highlighted={assistantCalloutActive} onOpen={() => setChatOpen(true)} />
     </div>
 
     <a className="phase-two-scroll" href="#about"><span className="scroll-ring"><ArrowDown size={15} /></span><span>SCROLL TO EXPLORE</span><i /></a>

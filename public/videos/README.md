@@ -1,16 +1,15 @@
-# Phase 2 hero video assets
+# Immersive hero video
 
-Place these three optimized MP4 files in this directory:
+The current hero uses one widescreen, full-scene video:
 
-- `walking-entrance.mp4` — initial character entrance
-- `welcome.mp4` — welcoming pose
-- `robot-interaction.mp4` — character and robot interaction
+- `hero-environment.mp4` — Zeeshan walking into the blue futuristic environment, greeting visitors, and interacting with the robot.
 
-All three are H.264, 720 × 720, 24 fps, approximately 7.9 seconds and muted (audio removed). Source footage was center-cropped to remove black side bars while keeping the person and robot visible.
+Place it at:
 
-The hero requests these public URLs:
-- `/videos/walking-entrance.mp4`
-- `/videos/welcome.mp4`
-- `/videos/robot-interaction.mp4`
+`public/videos/hero-environment.mp4`
 
-Extract the supplied Phase 2 asset ZIP at the repository root to install the MP4 files here.
+The hero requests it at `/videos/hero-environment.mp4`. It is H.264, 1280 × 720, 30 fps, approximately 13.37 seconds, with audio removed so the page's separate user-triggered voice introduction remains in control.
+
+The asset is trimmed from the supplied original footage to keep the continuous futuristic environment and exclude the later return to the white studio. The original source video is not overwritten.
+
+The earlier `walking-entrance.mp4`, `welcome.mp4`, and `robot-interaction.mp4` assets can remain in this folder; the current hero no longer requests them.

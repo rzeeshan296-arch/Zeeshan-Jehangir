@@ -1,10 +1,16 @@
-# Hero character video
+# Phase 2 hero video assets
 
-The hero uses one video asset at `/videos/zeeshan-hero.mp4`.
+Place these three optimized MP4 files in this directory:
 
-- Source: `Man_walking_in_studio_f57850eb_t3.6-8.mp4`
-- Original: 1280 × 720, 24 fps, approximately 4.33 seconds
-- Presentation: black side bars cropped from the source frame while preserving the complete person and original proportions
-- Playback: muted, inline, autoplay and loop; reduced-motion preference pauses playback
+- `walking-entrance.mp4` — initial character entrance
+- `welcome.mp4` — welcoming pose
+- `robot-interaction.mp4` — character and robot interaction
 
-The source is cropped and re-encoded at high quality for the web. No previous hero footage, watermarked clip, gesture simulation, or CSS character is used.
+All three are H.264, 720 × 720, 24 fps, approximately 7.9 seconds and muted (audio removed). Source footage was center-cropped to remove black side bars while keeping the person and robot visible.
+
+The hero requests these public URLs:
+- `/videos/walking-entrance.mp4`
+- `/videos/welcome.mp4`
+- `/videos/robot-interaction.mp4`
+
+Extract the supplied Phase 2 asset ZIP at the repository root to install the MP4 files here.

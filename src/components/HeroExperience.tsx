@@ -1,10 +1,10 @@
 'use client';
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Bot, Menu, Send, Sparkles, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, Bot, Menu, Send, Sparkles, Volume2, VolumeX, X } from 'lucide-react';
 
 const clips = [
-  { src: '/videos/walking-entrance.mp4', label: 'Walking entrance' },
+  { src: '/videos/walking-entrance-trimmed.mp4', label: 'Walking entrance' },
   { src: '/videos/welcome.mp4', label: 'Welcome' },
   { src: '/videos/robot-interaction.mp4', label: 'Robot interaction' },
 ] as const;
@@ -19,7 +19,7 @@ const replies = [
 const getReply = (question: string) => replies.find((item) => item.keys.some((key) => question.toLowerCase().includes(key)))?.text
   ?? 'Thanks for reaching out. Explore the portfolio sections to see my SEO, digital marketing and AI work, or use the contact links to start a conversation.';
 
-function RobotAssistant({ onOpen }: { onOpen: () => void }) {
+function RobotAssistant({ onOpen, highlighted }: { onOpen: () => void; highlighted: boolean }) {
   return <button className="hero-robot" type="button" onClick={onOpen} aria-label="Open AI portfolio assistant">
     <span className="robot-aura" />
     <svg className="robot-art" viewBox="0 0 160 190" role="img" aria-label="Friendly blue and white robot assistant">
@@ -37,16 +37,21 @@ function RobotAssistant({ onOpen }: { onOpen: () => void }) {
       <path d="M63 165v8M97 165v8" stroke="#b9ddff" strokeWidth="10" strokeLinecap="round" />
       <defs><linearGradient id="robotShell" x1="28" y1="25" x2="130" y2="175" gradientUnits="userSpaceOnUse"><stop stopColor="#fff" /><stop offset=".55" stopColor="#d8eaff" /><stop offset="1" stopColor="#75aeea" /></linearGradient></defs>
     </svg>
-    <span className="robot-status"><i /> ASK MY AI ASSISTANT <ArrowUpRight size={12} /></span>
+    <span className={highlighted ? "robot-status is-highlighted" : "robot-status"}><i /> Ask My AI Assistant <ArrowUpRight size={12} /></span>
   </button>;
 }
 
 function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const failed = useRef<Set<number>>(new Set());
   const [active, setActive] = useState(0);
   const [failedCount, setFailedCount] = useState(0);
   const [blocked, setBlocked] = useState(false);
+  const [voiceAvailable, setVoiceAvailable] = useState(false);
+  const [voiceMissing, setVoiceMissing] = useState(false);
+  const [voicePlaying, setVoicePlaying] = useState(false);
+  const [calloutActive, setCalloutActive] = useState(false);
 
   const play = useCallback(async (index: number) => {
     const video = videoRefs.current[index];
@@ -89,7 +94,48 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
     void advance(index);
   };
 
+  const toggleVoice = async () => {
+    const audio = audioRef.current;
+    if (!audio || !voiceAvailable) {
+      setVoiceMissing(true);
+      return;
+    }
+    if (!audio.paused) {
+      audio.pause();
+      setVoicePlaying(false);
+      return;
+    }
+    audio.pause();
+    audio.currentTime = 0;
+    setCalloutActive(false);
+    const firstVideo = videoRefs.current[0];
+    videoRefs.current.forEach((video) => video?.pause());
+    setActive(0);
+    if (firstVideo && !reducedMotion && !failed.current.has(0)) firstVideo.currentTime = 0;
+    try {
+      await Promise.all([
+        audio.play(),
+        !reducedMotion && firstVideo && !failed.current.has(0) ? firstVideo.play() : Promise.resolve(),
+      ]);
+      setVoicePlaying(true);
+      setBlocked(false);
+    } catch {
+      audio.pause();
+      setVoicePlaying(false);
+      setBlocked(true);
+    }
+  };
+
   return <div className="hero-media" aria-label="Animated character introduction">
+    <audio
+      ref={audioRef}
+      src="/audio/hero-intro.mp3"
+      preload="metadata"
+      onCanPlayThrough={() => { setVoiceAvailable(true); setVoiceMissing(false); }}
+      onError={() => { setVoiceAvailable(false); setVoiceMissing(true); setVoicePlaying(false); }}
+      onEnded={() => setVoicePlaying(false)}
+      onTimeUpdate={(event) => setCalloutActive(event.currentTarget.currentTime >= 7.2)}
+    />
     <div className="media-halo" /><div className="media-orbit media-orbit-one" /><div className="media-orbit media-orbit-two" />
     <div className="media-topline"><span><i /> LIVE INTRODUCTION</span><b>01 — 03</b></div>
     <div className="character-video-frame">
@@ -110,6 +156,17 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
       <div className="video-frame-shade" />
     </div>
     <div className="media-caption"><span>ZEESHAN JEHANGIR</span><b>SEO / AI / DIGITAL GROWTH</b></div>
+    <div className="hero-voice-controls">
+      <button className={voicePlaying ? 'voice-toggle is-playing' : 'voice-toggle'} type="button" onClick={() => void toggleVoice()} aria-label={voicePlaying ? 'Turn voice introduction off' : 'Play voice introduction'}>
+        {voicePlaying ? <VolumeX size={15} /> : <Volume2 size={15} />}
+        {voiceMissing ? 'Add voice recording' : voicePlaying ? 'Voice on · click to stop' : 'Hear my welcome'}
+      </button>
+      <details className="voice-transcript">
+        <summary>Read transcript</summary>
+        <p>Hello! I'm Zeeshan Jehangir. Welcome to my portfolio. Feel free to connect with me, explore my work, and if you'd like to know more, just ask my AI assistant!</p>
+      </details>
+    </div>
+    {voiceMissing && <p className="voice-missing-note" role="status">Add your recording as <code>public/audio/hero-intro.mp3</code> to enable the spoken welcome.</p>}
     {blocked && failedCount < clips.length && <button className="video-play-prompt" type="button" onClick={() => void play(active)}><span>▶</span> Play introduction</button>}
   </div>;
 }
@@ -170,7 +227,7 @@ export default function HeroExperience() {
       </div>
       <div className="phase-two-visual">
         <CharacterSequence reducedMotion={reducedMotion} />
-        <RobotAssistant onOpen={() => setChatOpen(true)} />
+        <RobotAssistant highlighted={false} onOpen={() => setChatOpen(true)} />
         <div className="visual-data-card data-card-top"><span>01 / SEARCH</span><b>Organic visibility</b><i>↗</i></div>
         <div className="visual-data-card data-card-bottom"><span>02 / INTELLIGENCE</span><b>AI-enabled growth</b><i>✳</i></div>
       </div>

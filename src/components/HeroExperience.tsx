@@ -31,9 +31,14 @@ function CharacterInteraction() {
     const player = videoRef.current;
     if (!player) return;
     setVideoError(false);
-    player.play()
-      .then(() => setPlaybackBlocked(false))
-      .catch(() => setPlaybackBlocked(true));
+    if (player.error) {
+      player.load();
+      player.addEventListener('canplay', () => {
+        player.play().then(() => setPlaybackBlocked(false)).catch(() => setPlaybackBlocked(true));
+      }, { once: true });
+      return;
+    }
+    player.play().then(() => setPlaybackBlocked(false)).catch(() => setPlaybackBlocked(true));
   };
 
   return <div className="character-stage">
@@ -51,10 +56,19 @@ function CharacterInteraction() {
         preload="auto"
         aria-label="Full-body video of Zeeshan walking in a studio"
         onLoadedData={() => {
-          if (reducedMotion) videoRef.current?.pause();
+          const player = videoRef.current;
+          if (!player) return;
+          if (reducedMotion) {
+            player.pause();
+            return;
+          }
+          player.play().then(() => setPlaybackBlocked(false)).catch(() => setPlaybackBlocked(true));
         }}
         onPlay={() => setPlaybackBlocked(false)}
-        onError={() => setVideoError(true)}
+        onError={() => {
+          setVideoError(true);
+          setPlaybackBlocked(false);
+        }}
       />
       <div className="character-bottom-glow"/>
     </div>

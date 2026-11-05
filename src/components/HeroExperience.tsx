@@ -234,6 +234,7 @@ export default function HeroExperience() {
   };
 
   return <section className="hero-shell phase-two-hero" id="home" onMouseMove={pointerMove}>
+    <CharacterSequence reducedMotion={reducedMotion} onCalloutHighlight={setAssistantCalloutActive} />
     <div className="hero-background-atmosphere" aria-hidden="true" />
     <header className="site-header wrap phase-two-header">
       <a className="brand phase-two-brand" href="#home" aria-label="Zeeshan Jehangir home"><span className="brand-mark">Z<span>.</span></span><span className="brand-copy">Zeeshan Jehangir<small>SEO &amp; AI DIGITAL GROWTH</small></span></a>

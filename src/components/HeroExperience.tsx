@@ -86,7 +86,7 @@ function CharacterSequence({ reducedMotion }: { reducedMotion: boolean }) {
     if (failed.current.has(index)) return;
     failed.current.add(index);
     setFailedCount(failed.current.size);
-    if (index === active) void advance(index);
+    if (index === active || videoRefs.current[active]?.ended) void advance(index);
   };
 
   return <div className="hero-media" aria-label="Animated character introduction">

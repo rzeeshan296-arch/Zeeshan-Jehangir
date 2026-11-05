@@ -126,7 +126,9 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     }
   };
 
-  return <div className="hero-video-background" aria-label="Full-screen cinematic background video">
+  return <>
+    <div className="hero-video-background" aria-hidden="true">
+    </div>
     <audio
       ref={audioRef}
       src="/audio/hero-intro.mp3"
@@ -195,7 +197,7 @@ function CharacterSequence({ reducedMotion, onCalloutHighlight }: { reducedMotio
     </div>
     {voiceMissing && <p className="voice-missing-note" role="status">Add your recording as <code>public/audio/hero-intro.mp3</code> to enable the spoken welcome.</p>}
     {blocked && failedCount < clips.length && <button className="video-play-prompt" type="button" onClick={() => void play(active)}><span>▶</span> Play introduction</button>}
-  </div>;
+  </>;
 }
 
 export default function HeroExperience() {

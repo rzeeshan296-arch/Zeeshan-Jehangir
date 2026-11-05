@@ -1,40 +1,44 @@
 # Zeeshan Jehangir — Personal Portfolio
 
-A Next.js App Router, React, TypeScript and Tailwind CSS v4 portfolio foundation with a responsive interactive hero and a lightweight portfolio assistant UI.
+A responsive Next.js App Router portfolio built with React, TypeScript and Tailwind CSS v4.
 
 ## Run locally
 
-\`\`\`bash
+```bash
 npm ci
 npm run dev
-\`\`\`
+```
 
-Production build: \`npm run build\`.
+Production checks:
 
-## Character video assets — required local setup
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
 
-The three source MP4s were available in the conversation for inspection, but the connected GitHub repository file operations cannot transfer binary uploads from conversation storage. The application therefore uses the correct stable media paths and a visual fallback until the two clean files are copied into \`public/videos/\`.
+## Phase 2 hero video assets
 
-Copy/rename the two clean, non-watermarked clips as follows:
+The premium hero uses three real, muted video clips in this order:
 
-| Original source | Destination | Intended use |
-|---|---|---|
-| \`Character_animation_for_portfoli…_1e4c9506(1).mp4\` | \`public/videos/zeeshan-upper-body-clean.mp4\` | Left-look and wave |
-| \`Character_animation_for_portfoli…_182878a0 (1)(1).mp4\` | \`public/videos/zeeshan-full-body-clean.mp4\` | Right-look and greeting |
+| Public asset path | Sequence role |
+|---|---|
+| `public/videos/walking-entrance.mp4` | Initial entrance |
+| `public/videos/welcome.mp4` | Welcoming pose |
+| `public/videos/robot-interaction.mp4` | Character and robot interaction |
 
-Do **not** add \`video (2)(1).mp4\`: the inspected footage contains a visible Pavo watermark. The app does not reference that clip. Pointing is intentionally disabled. Preserve originals; copy them and rename only the copies.
+The three optimized MP4 files are supplied in the Phase 2 hero asset ZIP. Extract the ZIP at the repository root so the files land directly in `public/videos/`. The application references the public URLs `/videos/walking-entrance.mp4`, `/videos/welcome.mp4` and `/videos/robot-interaction.mp4`.
 
-The source ranges are configured in \`src/components/HeroExperience.tsx\` under \`clips\`. Confirm/tune exact ranges after installing the MP4s and testing playback in a browser.
+All clips are H.264, 720 × 720, 24 fps, approximately 7.9 seconds and have their audio removed. The source footage was center-cropped to remove embedded black side bars while retaining the person and robot. The sequence crossfades between clips, skips failed clips where possible, and displays an explicit fallback if all video assets are unavailable. Reduced-motion preferences pause the animation.
 
-## Interaction map
+## Hero interactions
 
-- Desktop left zone: LOOK_LEFT
-- Desktop right zone: LOOK_RIGHT
-- Desktop centre zone: GREETING → WAVING → IDLE
-- Mobile: tap-to-greet
-- IDLE: clean CSS poster-style fallback until the neutral frame/video is installed
-- POINTING: disabled because the available source is watermarked
+- Desktop and mobile navigation link to the existing portfolio sections.
+- “Explore My Work” scrolls to Projects; “Let’s Talk” scrolls to Contact.
+- The floating SVG robot opens the local portfolio assistant.
+- The assistant answers common questions about SEO, local search, AI and selected work. It is a local scripted demo, not a connected LLM or external backend.
+- Subtle background particles, lighting and robot motion are disabled for reduced-motion preferences.
 
-## Assistant and scope
+## Deployment
 
-The assistant is a local scripted UI demo, not a connected LLM or live backend. The portfolio includes About, Expertise, Selected Work, Experience, Contact and footer sections. Project descriptions are deliberately qualitative; no unverified performance metrics are claimed. The assistant is a local scripted demonstration, not a connected LLM or backend. The existing Phase 0 planning documents are preserved.
+The project uses Next.js 15 and Node.js 20. Netlify can deploy it using its Next.js framework support with `npm run build`. Keep the three MP4 assets in `public/videos/` in the deployed branch; otherwise the hero will show its missing-media fallback.

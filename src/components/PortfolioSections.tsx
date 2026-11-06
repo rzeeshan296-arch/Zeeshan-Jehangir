@@ -5,7 +5,7 @@ import {
   ArrowRight, ArrowUpRight, BarChart3, BadgeCheck, BriefcaseBusiness, Building2,
   CarFront, ChartNoAxesCombined, Code2, ExternalLink, Globe2, Layers, MapPin,
   Megaphone, Monitor, Palette, Search, ShoppingBag, Sparkles, Stethoscope,
-  Store, Target, TrendingUp, Video, Zap,
+  Store, Target, TrendingUp, Video, Zap, Smartphone, Leaf, Milk,
 } from 'lucide-react';
 
 const services = [
@@ -17,7 +17,7 @@ const services = [
   { icon: Palette, number: '06', title: 'Branding & Creative Production', text: 'Visual identity, social media creatives, menus, business collateral, promotional graphics and content direction.' },
 ];
 
-type Category = 'All' | 'SEO & Local' | 'Paid Ads' | 'Websites' | 'Branding & Creative';
+type Category = 'All' | 'SEO & Local' | 'Paid Ads' | 'Websites' | 'Branding & Creative' | 'Android Apps';
 type Project = { name: string; category: Exclude<Category, 'All'>; descriptor: string; summary: string; tags: string[]; icon: typeof Search; tone: string; featured?: boolean };
 
 const projects: Project[] = [
@@ -45,10 +45,12 @@ const projects: Project[] = [
   { name: 'Menus & Food Promotions', category: 'Branding & Creative', descriptor: 'Creative · Food & hospitality', summary: 'Restaurant menus, food promotion graphics and campaign creative for hospitality businesses.', tags: ['Menu design', 'Promotional graphics', 'Social creative'], icon: Store, tone: 'food' },
   { name: 'Business Cards & Collateral', category: 'Branding & Creative', descriptor: 'Creative · Business collateral', summary: 'Business cards, QR review cards, invoice layouts and customer-facing printed collateral.', tags: ['Business cards', 'QR collateral', 'Print design'], icon: BriefcaseBusiness, tone: 'creative' },
   { name: 'Invitations & Event Creative', category: 'Branding & Creative', descriptor: 'Creative · Events', summary: 'Wedding, Mehndi and corporate invitation designs, plus event-oriented visual assets.', tags: ['Invitation design', 'Event creative', 'Print design'], icon: Sparkles, tone: 'events' },
+  { name: 'Milk Shop Khata App', category: 'Android Apps', descriptor: 'Android · Shop management', summary: 'Android application for managing a milk shop’s customer accounts and khata workflows. App screenshots and detailed feature walkthrough coming soon.', tags: ['Android', 'Khata management', 'Milk shop'], icon: Milk, tone: 'commerce', featured: true },
+  { name: 'Plant Assistant', category: 'Android Apps', descriptor: 'Android · Plant assistance', summary: 'Plant Assistant Android application. Screenshots and verified feature details will be added when available.', tags: ['Android', 'Plant assistant', 'App project'], icon: Leaf, tone: 'medical', featured: true },
   { name: 'Promotional Videos', category: 'Branding & Creative', descriptor: 'Motion · Short-form video', summary: 'A small selection of promotional and event video work included in the supplied creative archive.', tags: ['Video editing', 'Promotional content', 'Motion'], icon: Video, tone: 'motion' },
 ];
 
-const categories: Category[] = ['All', 'SEO & Local', 'Paid Ads', 'Websites', 'Branding & Creative'];
+const categories: Category[] = ['All', 'SEO & Local', 'Paid Ads', 'Websites', 'Branding & Creative', 'Android Apps'];
 
 const experience = [
   { role: 'SEO & Google Ads Manager', company: 'SS Metal Engineering', period: 'Oct 2024 — Apr 2025', place: 'UAE', detail: 'Managed search visibility and paid search activity for an engineering business.' },
@@ -111,14 +113,19 @@ export default function PortfolioSections() {
       <p className="project-disclaimer">Some entries are visual work samples rather than full case studies. Client names and performance evidence should only be published with the appropriate permission.</p>
     </section>
 
+    <section className="portfolio-section projects-section" id="android-apps">
+      <div className="section-heading section-heading-row"><div><span className="section-kicker">05 — ANDROID APPLICATIONS</span><h2>Practical mobile apps.<br/><em>Built around everyday needs.</em></h2></div><p>Two Android app projects. Screenshots, verified features and demonstrations will be added when the assets are shared.</p></div>
+      <div className="projects-grid projects-grid-expanded">{projects.filter((project)=>project.category==='Android Apps').map((project,index)=><article className="project-card project-card-expanded" key={project.name}><ProjectVisual project={project} index={index}/><div className="project-info"><span className="project-category">{project.descriptor}</span><h3>{project.name}</h3><p>{project.summary}</p><div className="project-tags">{project.tags.map(tag=><span key={tag}>{tag}</span>)}</div></div></article>)}</div>
+    </section>
+
     <section className="portfolio-section experience-section" id="experience">
-      <div className="section-heading"><span className="section-kicker">05 — EXPERIENCE</span><h2>Experience shaped by<br/><em>strategy and execution.</em></h2></div>
+      <div className="section-heading"><span className="section-kicker">06 — EXPERIENCE</span><h2>Experience shaped by<br/><em>strategy and execution.</em></h2></div>
       <div className="experience-list">{experience.map((item,index)=><article className="experience-item" key={item.company}><span className="experience-index">0{index+1}</span><div className="experience-main"><h3>{item.role}</h3><b>{item.company}</b><p>{item.detail}</p></div><div className="experience-meta"><strong>{item.period}</strong><span>{item.place}</span></div></article>)}</div>
       <div className="learning-strip"><div><span className="section-kicker">CONTINUOUS LEARNING</span><h3>Keeping strategy current as search and AI evolve.</h3></div><p>Professional learning includes digital marketing, critical thinking in the AI era, search optimization and practical AI tooling.</p></div>
       <div className="credential-grid"><article className="credential-card"><span className="credential-icon"><Sparkles size={20}/></span><div><span className="section-kicker">CERTIFICATION</span><h3>Digital Marketing Mastery Program</h3><p>Honhaar Jawan · Completed May 7, 2026</p></div><a href="https://honhaarjawan.pk/verify/HONHAAR-03D58213DC" target="_blank" rel="noreferrer">Verify credential <ArrowUpRight size={15}/></a></article><article className="credential-card"><span className="credential-icon"><BadgeCheck size={20}/></span><div><span className="section-kicker">CERTIFICATION</span><h3>Critical Thinking in the AI Era</h3><p>Professional learning · AI-era critical thinking</p></div></article></div>
     </section>
 
-    <section className="portfolio-contact" id="contact"><div className="contact-orb"/><div className="contact-content"><span className="section-kicker">06 — LET’S CONNECT</span><h2>Have a growth challenge<br/>worth solving?</h2><p>Tell me what you are building, improving or trying to solve. Let’s explore a practical next step.</p><div className="contact-actions"><a className="contact-primary" href="https://www.linkedin.com/in/zeeshanjehangir" target="_blank" rel="noreferrer">Connect on LinkedIn <ArrowUpRight size={17}/></a><a className="contact-secondary" href="https://www.facebook.com/share/1DT9QHGfSE/" target="_blank" rel="noreferrer">Find me on Facebook <ExternalLink size={15}/></a></div><div className="contact-dme">Independent specialist · Building through <strong>Digi Marketing Experts</strong></div></div><div className="contact-decoration"><span>Z.</span><small>LET’S BUILD<br/>SOMETHING USEFUL.</small></div></section>
+    <section className="portfolio-contact" id="contact"><div className="contact-orb"/><div className="contact-content"><span className="section-kicker">07 — LET’S CONNECT</span><h2>Have a growth challenge<br/>worth solving?</h2><p>Tell me what you are building, improving or trying to solve. Let’s explore a practical next step.</p><div className="contact-actions"><a className="contact-primary" href="https://www.linkedin.com/in/zeeshanjehangir" target="_blank" rel="noreferrer">Connect on LinkedIn <ArrowUpRight size={17}/></a><a className="contact-secondary" href="https://www.facebook.com/share/1DT9QHGfSE/" target="_blank" rel="noreferrer">Find me on Facebook <ExternalLink size={15}/></a></div><div className="contact-dme">Independent specialist · Building through <strong>Digi Marketing Experts</strong></div></div><div className="contact-decoration"><span>Z.</span><small>LET’S BUILD<br/>SOMETHING USEFUL.</small></div></section>
     <footer className="portfolio-footer"><a className="footer-brand" href="#home">Zeeshan Jehangir<span>.</span></a><span>SEO &amp; AI Digital Growth Specialist</span><a className="dme-affiliation" href="https://www.facebook.com/share/1DT9QHGfSE/" target="_blank" rel="noreferrer">Digi Marketing Experts ↗</a><a href="#home">Back to top ↑</a><small>© {new Date().getFullYear()} Zeeshan Jehangir. Built with purpose.</small></footer>
   </>;
 }
